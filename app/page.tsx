@@ -163,18 +163,26 @@ export default function Home() {
         setError(data?.message || data?.error || "Failed to parse.");
         return;
       }
+      const items = Array.isArray(data?.items) ? data.items : [];
+      if (items.length === 0) {
+        setError("Couldn't read any priced item.");
+        return;
+      }
       const dateISO = new Date(`${date}T12:00:00`).toISOString();
-      setTxs((prev) => [
-        {
-          id: crypto.randomUUID(),
-          description: data.description,
-          amount: Number(data.amount),
-          type: data.type,
-          category: data.category,
-          date: dateISO,
-        },
-        ...prev,
-      ]);
+      const newTxs: Tx[] = items.map((it: {
+        description?: string;
+        amount?: number;
+        type?: string;
+        category?: string;
+      }) => ({
+        id: crypto.randomUUID(),
+        description: String(it.description ?? ""),
+        amount: Number(it.amount),
+        type: it.type === "income" ? "income" : "expense",
+        category: String(it.category ?? "Other").slice(0, 30),
+        date: dateISO,
+      }));
+      setTxs((prev) => [...newTxs, ...prev]);
       setText("");
       setDate(todayLocalISO());
     } catch {
