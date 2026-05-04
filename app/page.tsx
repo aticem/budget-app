@@ -198,6 +198,9 @@ export default function Home() {
               <h1 className="text-3xl font-semibold tracking-tight text-[#f4efe3]">
                 Budget
               </h1>
+              <p className="mt-0.5 text-[10px] uppercase tracking-[0.18em] text-[#ecd092]/55">
+                powered by LLM
+              </p>
               <p className="mt-1 text-sm text-[#f4efe3]/60">
                 Just type what you bought — the assistant figures out the rest.
               </p>
